@@ -1,0 +1,56 @@
+import random
+
+class Jugador:
+    def __init__(self, nombre, vida=100, oro=50):
+        self.nombre = nombre
+        self.vida = vida
+        self.oro = oro
+
+    def atacar(self, enemigo):
+        dano = random.randint(10, 20)
+        enemigo.vida -= dano
+        print(f"⚔️ {self.nombre} atacó a {enemigo.nombre} y le causó {dano} de daño!")
+        return dano
+
+    def mostrar_stats(self):
+        print(f"🛡️ Héroe: {self.nombre} | HP: {self.vida} | Oro: {self.oro} 🪙")
+
+    def curar(self):
+        if self.oro >= 10:
+            self.oro -= 10
+            self.vida += 20
+            if self.vida > 100:
+                self.vida = 100
+            print(f"🧪 {self.nombre} usó una poción! Recuperó 20 HP. Vida actual: {self.vida}")
+        else:
+            print("⚠️ ¡No tienes suficiente oro para comprar una poción! (Cuesta 10 de oro)")
+
+    def guardar_partida(self):
+        with open("partida_final.txt", "w") as archivo:
+            archivo.write(f"Nombre: {self.nombre}\n")
+            archivo.write(f"Vida: {self.vida}\n")
+            archivo.write(f"Oro: {self.oro}\n")
+        print("💾 Partida guardada con éxito en 'partida_final.txt'.")
+
+# Instancia del héroe
+mi_jugador = Jugador("Alex")
+
+# Bucle interactivo de juego
+while True:
+    print("\n--- 🗡️ MENÚ DE AVENTURA ---")
+    print("1. Ver estadísticas")
+    print("2. Usar poción de curación")
+    print("3. Salir del juego")
+    
+    opcion = input("Selecciona una opción (1-3): ")
+
+    if opcion == "1":
+        mi_jugador.mostrar_stats()
+    elif opcion == "2":
+        mi_jugador.curar()
+    elif opcion == "3":
+        mi_jugador.guardar_partida()
+        print("👋 ¡Gracias por jugar Python Quest! Progreso guardado.")
+        break
+    else:
+        print("⚠️ Opción inválida, intenta de nuevo.")
